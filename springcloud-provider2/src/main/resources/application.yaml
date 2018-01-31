@@ -1,0 +1,9 @@
+server:
+  port: 5203
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:5201/eureka/
+spring:
+  application:
+    name: service-provider
