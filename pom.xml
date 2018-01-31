@@ -15,6 +15,12 @@
 		<module>springcloud-provider1</module>
 		<module>springcloud-provider2</module>
 		<module>springcloud-ribbon</module>
+		<module>springcloud-feign</module>
+		<module>springcloud-hystrix-ribbon</module>
+		<module>springcloud-hystrix-feign</module>
+		<module>springcloud-hystix-ribbon-dashboard</module>
+		<module>springcloud-zuul</module>
+		<module>springcloud-config</module>
 	</modules>
 
 </project>
