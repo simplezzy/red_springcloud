@@ -1,0 +1,38 @@
+有很多个服务的时候，需要聚合所有服务的Hystrix Dashboard数据，Hystrix Turbine
+看单个的Hystrix Dashboard的数据并没有什么多大的价值，要想看这个系统的Hystrix Dashboard数据就需要用到Hystrix Turbine。
+Hystrix Turbine将每个服务Hystrix Dashboard数据进行了整合。
+Hystrix Turbine的使用非常简单，只需要引入相应的依赖和加上注解和配置就可以
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-turbine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-netflix-turbine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        加上注解@EnableTurbine，开启turbine，@EnableTurbine注解包含了@EnableDiscoveryClient注解，即开启了注册服务
+
+        yaml配置
+        spring:
+          application.name: service-turbine
+        server:
+          port: 5259
+        security.basic.enabled: false
+        turbine:
+          aggregator:
+            clusterConfig: default   # 指定聚合哪些集群，多个使用","分割，默认为default。可使用http://.../turbine.stream?cluster={clusterConfig之一}访问
+          appConfig: service-hi,service-lucy  ### 配置Eureka中的serviceId列表，表明监控哪些服务
+          clusterNameExpression: new String("default")
+          # 1. clusterNameExpression指定集群名称，默认表达式appName；此时：turbine.aggregator.clusterConfig需要配置想要监控的应用名称
+          # 2. 当clusterNameExpression: default时，turbine.aggregator.clusterConfig可以不写，因为默认就是default
+          # 3. 当clusterNameExpression: metadata['cluster']时，假设想要监控的应用配置了eureka.instance.metadata-map.cluster: ABC，则需要配置，同时turbine.aggregator.clusterConfig: ABC
+        eureka:
+          client:
+            serviceUrl:
+              defaultZone: http://localhost:5251/eureka/

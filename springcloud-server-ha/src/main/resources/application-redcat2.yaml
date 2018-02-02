@@ -1,0 +1,11 @@
+server:
+  port: 5259
+
+spring:
+  profiles: redcat2
+eureka:
+  instance:
+    hostname: redcat2
+  client:
+    serviceUrl:
+      defaultZone: http://peer2:5251/eureka/
